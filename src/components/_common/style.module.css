@@ -1,0 +1,136 @@
+/* display styles */
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* END display styles */
+
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.resetStyles {
+    all: initial;
+}
+
+.relative {
+    position: relative;
+    transition: height 0.9s ease-in-out;
+    background-color: inherit;
+}
+
+.noSelect {
+    user-select: none;
+}
+
+/* common tooltip styles */
+
+.tooltipText {
+    visibility: hidden;
+    min-width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 11;
+    bottom: -100%;
+    left: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    transition-delay: 0.5s;
+    transform: translate(-50%, -50%) translateY(-10px);
+}
+
+.tooltipHover:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+    z-index: 45;
+}
+
+.tooltipText2 {
+    visibility: hidden;
+    min-width: 50px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px;
+    position: absolute;
+    z-index: 11;
+    bottom: -110%;
+    left: 85%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    transition-delay: 0.5s;
+    transform: translate(0%, 0%) translateY(-10px);
+}
+
+.tooltipHover:hover .tooltipText2 {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(0%, 0%) translateY(0);
+    z-index: 45;
+}
+
+/* END common tooltip styles */
+
+.inputButton {
+    border: 1px solid #6958BE;
+    border-radius: 0px 10px 0px 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+    top: 0%;
+    right: 0;
+    transform: translate(110%, 0%);
+    background-color: #6958BE;
+    padding: 5px;
+}
+
+.inputStyle {
+    border: 1px solid #A2405F;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 5px 5px 5px 15px;
+    height: 40px;
+    width: 100%;
+}
+
+.inputLabel {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    z-index: 42;
+    color: #333;
+    padding: 0px 4px;
+    background: inherit;
+}
+
+.addNewItemContainer {
+    position: relative;
+    margin-top: 10px;
+    background: inherit;
+    width: 100%;
+}
+
+.inputStyle:active,
+.inputStyle:focus {
+    border: 1px solid #781e3a;
+}
+
+.animatedFlex {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+}

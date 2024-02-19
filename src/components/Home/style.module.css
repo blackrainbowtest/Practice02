@@ -1,0 +1,23 @@
+.container {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    background-color: #F7E4E8;
+}
+
+.addNewMenu {
+    padding: 15px 0px;
+    transition: transform 0.5s ease-in-out;
+    background-color: inherit;
+}
+
+.menuContainer {
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    align-items: start;
+}

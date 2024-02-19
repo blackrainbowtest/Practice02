@@ -1,0 +1,29 @@
+.addNewMenuItem {
+    padding: 6px;
+    min-width: 400px;
+    height: 40px;
+    border: 1px dashed gray;
+}
+
+.addNewMenuButton {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.paddingContainer {
+    padding: 5px;
+    background-color: #F7E4E8;
+}
+
+/* Hover */
+
+.addNewMenuItem:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.addNewMenuItem:hover .addNewMenuButton {
+    background-color: rgba(255, 255, 255, 0.2);
+}

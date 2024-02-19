@@ -1,0 +1,108 @@
+.menuItemContainer {
+    width: 100%;
+    color: white;
+}
+
+.menuItemContainer.grab {
+    cursor: grab;
+}
+
+.subMenuCount {
+    width: 50px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 10px;
+    color: lightgray;
+}
+
+.menuData {
+    width: 100%;
+    display: flex;
+    background-color: #DE1F5F;
+    overflow: hidden;
+}
+
+.menuData.active {
+    background-color: #6457BB;
+}
+
+.menuData.secondary {
+    background-color: #9184e4;
+}
+
+.menuAction {
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.menuAction button {
+    all: initial;
+    color: white;
+    cursor: pointer;
+}
+
+.menuIcon {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.activeColor {
+    color: #6457BB;
+}
+
+.menuItem {
+    width: 100%;
+    min-height: 40px;
+    padding: 6px;
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    background-color: #DE1F5F;
+}
+
+.menuItem.active {
+    background-color: #6457BB;
+}
+
+.menuItem.secondary {
+    background-color: #9184e4;
+}
+
+.subMenuCountContainer {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+}
+
+.subMenuCountNumber {
+    position: absolute;
+    background-color: #6457BB;
+    border-radius: 50%;
+    top: -5px;
+    left: 0px;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0;
+}
+
+.addNewSubMenu {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    background-color: #F7E4E8;
+}
+
+.addNewSubMenu > div {
+    min-width: 350px;
+}
