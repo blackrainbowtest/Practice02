@@ -52,3 +52,32 @@ export const patchMenu = createAsyncThunk(
         }
     }
 )
+
+export const dragMenu = createAsyncThunk(
+    'menu/dragMenu',
+    async (items, { rejectWithValue }) => {
+      try {
+        const responses = await Promise.all(
+          items.map(async (item) => {
+            const response = await axios.patch(`${url}/${item.id}`, item);
+            return response.data;
+          })
+        );
+  
+        return responses;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    }
+  );
+
+// if (error.response) {
+//     // Ошибка от сервера с ответом (например, 4xx, 5xx)
+//     return rejectWithValue(error.response.data);
+//   } else if (error.request) {
+//     // Ошибка, связанная с отсутствием ответа от сервера
+//     return rejectWithValue('Сервер не отвечает');
+//   } else {
+//     // Ошибка в процессе отправки запроса
+//     return rejectWithValue('Не удалось выполнить запрос');
+//   }
