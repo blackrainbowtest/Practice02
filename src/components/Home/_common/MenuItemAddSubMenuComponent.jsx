@@ -4,8 +4,7 @@ import AnimatedContainerLeft from "../../_common/AnimatedContainerLeft";
 
 export default function MenuItemAddSubMenuComponent({
   setIsAdd,
-  addNewSubMenu,
-  name
+  addNewSubMenu
 }) {
   return (
     <AnimatedContainerLeft
@@ -13,7 +12,6 @@ export default function MenuItemAddSubMenuComponent({
         <AddInput
           setIsClicked={setIsAdd}
           inputData={addNewSubMenu}
-          defaultName={name}
         />
       }
       primaryStyle={styles.addNewSubMenu}

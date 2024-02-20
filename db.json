@@ -1,28 +1,76 @@
 {
   "menu": [
     {
-      "order": 4,
-      "name": "test55d",
-      "data": [],
-      "id": 2
-    },
-    {
-      "order": 3,
-      "name": "dsfdgfgFD",
-      "data": [],
-      "id": 3
-    },
-    {
       "order": 1,
       "name": "Menu 1",
-      "data": [],
-      "id": 4
+      "parent": null,
+      "id": 1
     },
     {
       "order": 2,
       "name": "Menu 2",
-      "data": [],
+      "parent": null,
+      "id": 2
+    },
+    {
+      "order": 3,
+      "name": "Menu 1.1",
+      "parent": 1,
+      "id": 3
+    },
+    {
+      "order": 4,
+      "name": "Menu 3",
+      "parent": null,
+      "id": 4
+    },
+    {
+      "order": 2,
+      "name": "Menu 1.2",
+      "parent": 1,
       "id": 5
+    },
+    {
+      "order": 3,
+      "name": "Menu 1.3",
+      "parent": 1,
+      "id": 6
+    },
+    {
+      "order": 1,
+      "name": "test",
+      "parent": 2,
+      "id": 7
+    },
+    {
+      "order": 1,
+      "name": "Menu 1.2.1",
+      "parent": 5,
+      "id": 8
+    },
+    {
+      "order": 1,
+      "name": "Menu 1.2.1.1",
+      "parent": 8,
+      "id": 9
+    },
+    {
+      "order": 1,
+      "name": "Menu 1.2.1.1.1",
+      "parent": 9,
+      "id": 10
+    },
+    {
+      "order": 2,
+      "name": "Menu 1.2.1.1.2",
+      "parent": 9,
+      "id": 11
+    },
+    {
+      "order": 2,
+      "name": "Menu 1.2.1.2",
+      "parent": 8,
+      "id": 12
     }
   ]
 }

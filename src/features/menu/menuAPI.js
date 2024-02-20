@@ -19,9 +19,9 @@ export const getMenu = createAsyncThunk(
 
 export const addMenu = createAsyncThunk(
     'menu/addMenu',
-    async ({name, order}, { rejectWithValue }) => {
+    async ({ name, order = 1, parent = null }, { rejectWithValue }) => {
         try {
-            const response = await axios.post(url, {order, name, data: []});
+            const response = await axios.post(url, { order, name, parent });
             return response.data;
         } catch (err) {
             return rejectWithValue(err.message)

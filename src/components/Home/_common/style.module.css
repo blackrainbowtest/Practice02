@@ -1,6 +1,15 @@
 .menuItemContainer {
-    width: 100%;
+    width: 400px;
     color: white;
+}
+
+.subMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    margin-top: 10px;
+    margin-left: 30px;
 }
 
 .menuItemContainer.grab {

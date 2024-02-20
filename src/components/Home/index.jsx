@@ -33,6 +33,7 @@ export default function Home() {
         ) : (
           data
             .slice()
+            .filter(item => item.parent === null)
             .sort((a, b) => a.order - b.order)
             .map((item) => <MenuItemComponent key={item.id} item={item} />)
         )}
