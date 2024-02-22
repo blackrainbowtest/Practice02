@@ -91,8 +91,15 @@ export default function MenuItemComponent({ item }) {
   const dropHandle = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    const updatedData =
+      currentItem?.parent === draggedItem?.parent
+        ? data.filter((obj) => obj.parent === draggedItem?.parent)
+        : [
+            ...data.filter((obj) => obj.parent === draggedItem?.parent),
+            ...data.filter((obj) => obj.parent === currentItem?.parent),
+          ];
 
-    console.log(data.filter((obj) => obj.parent === draggedItem?.parent));
+    console.log(updatedData);
 
     // if (draggedItem && currentItem.id !== draggedItem?.id) {
     //   dispatch(dragMenu(data.filter(obj => obj.parent === currentItem.parent)));
@@ -115,123 +122,149 @@ export default function MenuItemComponent({ item }) {
     e.stopPropagation();
 
     if (!isDescendant(item.id, currentItem.id, data)) {
-      // mouse event
       const elementRect =
         e.currentTarget.firstElementChild.getBoundingClientRect();
       const mouseYRelativeToTop = e.clientY - elementRect.top;
       const elementHeight = elementRect.height;
       const isMouseInUpperHalf = mouseYRelativeToTop <= elementHeight / 2;
 
-      // current and target items
       let currentItemTemp = data.find((obj) => obj.id === currentItem.id);
       let draggedItemTemp = data.find((obj) => obj.id === item.id);
+      let isNeighbours = false;
 
-      // change event logic
+      let newData = data.map((el) => {
+        if (el.id === currentItem.id) {
+          return { ...el, parent: item.parent };
+        }
+        return el;
+      });
+
       if (isMouseInUpperHalf) {
-        if (currentItem.parent === item.parent) {
-          const newData = data.map((el) => {
-            if(el.parent === currentItemTemp.parent) {
-              if(currentItemTemp.order < draggedItemTemp.order) { // if item moves from top to bot DONE
-                if(el.id === currentItemTemp.id) {
-                  return {...el, order: draggedItemTemp.order - 1}
-                } else if (el.order <= draggedItemTemp.order - 1 && el.order > currentItemTemp.order) {
-                  return {...el, order: el.order - 1}
+        // TOP SAME PARENT LOGIC DONE
+        if (currentItemTemp.parent === item.parent) {
+          newData = newData.map((el) => {
+            if (el.parent === currentItemTemp.parent) {
+              if (currentItemTemp.order < draggedItemTemp.order) {
+                if (currentItemTemp.order === draggedItemTemp.order - 1) {
+                  isNeighbours = true;
+                  if (el.id === currentItemTemp.id) {
+                    return { ...el, order: draggedItemTemp.order };
+                  } else if (el.id === draggedItemTemp.id) {
+                    return { ...el, order: currentItemTemp.order };
+                  }
+                } else {
+                  if (el.id === currentItemTemp.id) {
+                    return { ...el, order: draggedItemTemp.order - 1 };
+                  } else if (
+                    el.order <= draggedItemTemp.order - 1 &&
+                    el.order > currentItemTemp.order
+                  ) {
+                    return { ...el, order: el.order - 1 };
+                  }
                 }
-              } else {                                            // if item moves from bot to top DONE
-                if(el.id === currentItemTemp.id) {
-                  return {...el, order: draggedItemTemp.order}
-                } else if (el.order >= draggedItemTemp.order && el.order < currentItemTemp.order) {
-                  return {...el, order: el.order + 1}
+              } else {
+                if (el.id === currentItemTemp.id) {
+                  return { ...el, order: draggedItemTemp.order };
+                } else if (
+                  el.order >= draggedItemTemp.order &&
+                  el.order < currentItemTemp.order
+                ) {
+                  return { ...el, order: el.order + 1 };
                 }
               }
-              // from bot to top       from top to bot
-              // 1   1    1    1       1   1     1    1
-              // 2 * 5 2  2    2       2 ↓ 3     3    2
-              // 3   2    2 +1 3       3   4     4    3
-              // 4   3    3 +1 4       4   2 5-1 4    4
-              // 5 ↑ 4    4 +1 5       5 * 5     5    5
-              // 6   6    6    6       6   6     6    6
             }
-            return el
-          })
-          dispatch(updateData(newData))
+            return el;
+          });
         } else {
-          console.log("top logic with different parent", isHalf);
+
+
+
+
+          console.log("top curr", newData.find((obj) => obj.id === currentItem.id).parent);
+          console.log("top drag", newData.find((obj) => obj.id === item.id).parent);
+          newData = newData.map((el) => {
+            if (el.id === currentItemTemp.id) {
+              return { ...el, order: draggedItemTemp?.order };
+            } else if (                                       // work correct this path
+              el.parent === currentItemTemp.parent &&
+              el.order >= currentItemTemp.order
+            ) {
+              return { ...el, order: el.order - 1 };
+            } else if (
+              el.parent === draggedItemTemp.parent &&
+              el.order >= draggedItemTemp.order
+            ) {
+              return { ...el, order: el.order + 1 };
+            }
+            return el;
+          });
         }
       } else {
+        // BOT SAME PARENT LOGIC DONE
         if (currentItem.parent === item.parent) {
-          const newData = data.map((el) => {
-            if(currentItemTemp.order < draggedItemTemp.order) { // if item moves from top to bot DONE
-              if(el.id === currentItemTemp.id) {
-                return {...el, order: draggedItemTemp.order}
+          newData = newData.map((el) => {
+            if (currentItemTemp.order < draggedItemTemp.order) {
+              if (el.id === currentItemTemp.id) {
+                return { ...el, order: draggedItemTemp.order };
               }
-              if (el.order <= draggedItemTemp.order && el.order > currentItemTemp.order) {
-                return {...el, order: el.order - 1}
+              if (
+                el.order <= draggedItemTemp.order &&
+                el.order > currentItemTemp.order
+              ) {
+                return { ...el, order: el.order - 1 };
               }
-            } else {                                            // if item moves from bot to top
-              if(el.id === currentItemTemp.id) {
-                return {...el, order: draggedItemTemp.order + 1}
-              }
-              if (el.order >= draggedItemTemp.order + 1 && el.order < currentItemTemp.order) {
-                return {...el, order: el.order + 1}
+            } else {
+              if (currentItemTemp.order === draggedItemTemp.order + 1) {
+                isNeighbours = true;
+                if (el.id === currentItemTemp.id) {
+                  return { ...el, order: draggedItemTemp.order };
+                } else if (el.id === draggedItemTemp.id) {
+                  return { ...el, order: currentItemTemp.order };
+                }
+              } else {
+                if (el.id === currentItemTemp.id) {
+                  return { ...el, order: draggedItemTemp.order + 1 };
+                }
+                if (
+                  el.order >= draggedItemTemp.order + 1 &&
+                  el.order < currentItemTemp.order
+                ) {
+                  return { ...el, order: el.order + 1 };
+                }
               }
             }
-            // from top to bot        // from bot to top
-            // 1   1     1     1      1   1     1     1
-            // 2 ↓ 3     3 -1  2      2 * 2     2     2
-            // 3   4     4 -1  3      3   5 2+1 3     3
-            // 4   5     5 -1  4      4   3     3 +1  4
-            // 5 * 2  5  5     5      5 ↑ 4     4 +1  5
-            // 6   6     6     6      6   6     6     6
-            return el
-          })
-          dispatch(updateData(newData))
+            return el;
+          });
         } else {
-          console.log("bot logic with different parent", isHalf);
+          
+          
+          
+          
+
+          
+          console.log("bot curr", newData.find((obj) => obj.id === currentItem.id).parent);
+          console.log("bot drag", newData.find((obj) => obj.id === item.id).parent);
+          newData = newData.map((el) => {
+            if (el.id === currentItemTemp.id) {
+              return { ...el, order: draggedItemTemp?.order + 1 };
+            } else if (                                       // work correct this path
+              el.parent === currentItemTemp.parent &&
+              el.order >= currentItemTemp.order
+            ) {
+              return { ...el, order: el.order - 1 };
+            } else if (
+              el.parent === draggedItemTemp.parent &&
+              el.order >= draggedItemTemp.order + 1
+            ) {
+              return { ...el, order: el.order + 1 };
+            }
+            return el;
+          });
         }
       }
-      if (draggedItem?.id !== item?.id) {
-        // need to be update code and check in lambda func to change item parent to same one
-        //   // Logic when current and dragged items isnt in same parent directory
-        //   const newData = data.map((el) => {
-        //     if (el.id === currentItem.id && draggedItemTemp.order !== 1) {
-        //       // Chooesed item loghc WHEN target elm is not first
-        //       return {
-        //         ...el,
-        //         parent: draggedItemTemp.parent,
-        //         order: draggedItemTemp.order + 1,
-        //       };
-        //     } else if (
-        //       el.id === currentItem.id &&
-        //       draggedItemTemp.order === 1
-        //     ) {
-        //       // Chooesed item logic WHEN target elm is first
-        //       return { ...el, parent: draggedItemTemp.parent, order: 1 };
-        //     } else if (
-        //       el.parent === currentItemTemp.parent &&
-        //       el.order > currentItemTemp.order
-        //     ) {
-        //       // Chooesed item neighbors logic WHEN he leave directiom
-        //       return { ...el, order: el.order - 1 };
-        //     } else if (
-        //       el.id === draggedItemTemp.id &&
-        //       draggedItemTemp.order === 1
-        //     ) {
-        //       // Chooesed item logic WHEN target elm is first
-        //       return { ...el, parent: draggedItemTemp.parent, order: 2 };
-        //     } else if (
-        //       el.parent === draggedItemTemp.parent &&
-        //       el.order > draggedItemTemp.order
-        //     ) {
-        //       return { ...el, order: el.order + 1 };
-        //     }
-        //     return el;
-        //   });
-        //   dispatch(updateData(newData));
-        // }
-      }
+      dispatch(updateData(newData));
       dispatch(changeDraggedItem(item));
-      setIsHalf(isMouseInUpperHalf);
+      setIsHalf(isNeighbours ? !isMouseInUpperHalf : isMouseInUpperHalf);
     }
   };
 

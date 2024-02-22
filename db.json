@@ -77,6 +77,12 @@
       "name": "Menu 1.1.1",
       "parent": 3,
       "id": 14
+    },
+    {
+      "order": 2,
+      "name": "test",
+      "parent": 3,
+      "id": 15
     }
   ]
 }

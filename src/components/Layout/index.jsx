@@ -20,13 +20,15 @@ export default function Layout() {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          padding: "10px",
+          padding: "2px 15px",
           borderBottom: "1px solid gray",
         }}
       >
-        layout
+        <div>
+          
+        </div>
         <div className={styles.showButton} onClick={changeShown}>
-          {isChildShow ? (
+          {!isChildShow ? (
             <FontAwesomeIcon
               icon={faEye}
               className={commonStyle.cursorPointer}
