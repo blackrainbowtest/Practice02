@@ -22,8 +22,12 @@
     background-color: #6457BB;
 }
 
-.menuItem.secondary {
+.menuItem.secondaryBot {
     box-shadow: 0 5px 3px #8c0f39;
+}
+
+.menuItem.secondaryTop {
+    box-shadow: 0 -5px 3px #8c0f39;
 }
 
 /* END Main Menu Item Block */
