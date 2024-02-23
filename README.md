@@ -44,38 +44,3 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-
-            // move from IDK to bot
-            // 1    1     1     1
-            // 2    2     2     2
-            // 3 *  3     3     3
-            // 4    4  +1 4     4
-            // 5    4     4  +1 5
-            // 6    5     5  +1 6
-            //      6     6  +1 7
-
-            // 1    1     1     1
-            // 2    2     2     2
-            // 3    3     3     3
-            // 4 ↑  5  -1 4     5
-            // 5    6  -1 5     6
-            // 6    -     -     -
-
-
-
-            // move from IDK to top
-            // 1    1     1     1
-            // 2    2     2     2
-            // 3 *  4  3  3     3
-            // 4    3     3  +1 4
-            // 5    4     4  +1 5
-            // 6    5     5  +1 6
-            //      6     6  +1 7
-
-            // 1    1     1     1
-            // 2    2     2     2
-            // 3    3     3     3
-            // 4 ↑  5  -1 4     5
-            // 5    6  -1 5     6
-            // 6    -     -     -
