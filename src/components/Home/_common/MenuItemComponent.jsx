@@ -207,7 +207,10 @@ export default function MenuItemComponent({ item }) {
               ? commonStyle.cursorPointer
               : null
           }`}
-          onClick={() => setIsShow((prev) => !prev)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsShow((prev) => !prev)
+          }}
         >
           {data.slice().filter((elm) => elm.parent === item.id).length ? (
             <div className={styles.subMenuCountContainer}>
