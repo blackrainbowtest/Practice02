@@ -2,8 +2,8 @@
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    justify-content: flex-start;
+    align-items: flex-start;
     background-color: #F7E4E8;
 }
 
@@ -19,5 +19,5 @@
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-    align-items: start;
+    align-items: flex-start;
 }

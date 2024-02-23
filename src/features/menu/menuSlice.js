@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 // importing action functions from API
-import { addMenu, deleteMenu, getMenu, patchMenu, putMenu } from "./menuAPI"
+import { addMenu, deleteMenu, dragMenu, getMenu, patchMenu } from "./menuAPI"
 
 const initialState = {
     data: [],
@@ -9,7 +9,8 @@ const initialState = {
     loading: false,
     currentItem: null,
     draggedItem: null,
-    isChildShow: false
+    isChildShow: false,
+    modifiedData: []
 }
 
 export const menuSlice = createSlice({
@@ -30,6 +31,9 @@ export const menuSlice = createSlice({
         },
         updateData: (state, action) => {
             state.data = action.payload
+        },
+        updateModifiedData: (state, action) => {
+            state.modifiedData = action.payload
         },
     },
     extraReducers: (builder) => {
@@ -80,10 +84,24 @@ export const menuSlice = createSlice({
                 state.loading = false
                 state.errorMessage = action.payload
             })
+            .addCase(dragMenu.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(dragMenu.fulfilled, (state, action) => {
+                state.loading = false
+                state.data = state.data.map((item) => {
+                    const updatedItem = action.payload.find((updated) => updated.id === item.id);
+                    return updatedItem ? { ...item, ...updatedItem } : item;
+                });
+            })
+            .addCase(dragMenu.rejected, (state, action) => {
+                state.loading = false
+                state.errorMessage = action.payload
+            })
     }
 })
 
 // export slice to app/store
 export default menuSlice.reducer
 
-export const { setError, changeCurrentItem, changeDraggedItem, changeIsChildShow, updateData } = menuSlice.actions
+export const { setError, changeCurrentItem, changeDraggedItem, changeIsChildShow, updateData, updateModifiedData } = menuSlice.actions

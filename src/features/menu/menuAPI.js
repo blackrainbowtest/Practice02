@@ -65,7 +65,6 @@ export const dragMenu = createAsyncThunk(
                     return response.data;
                 })
             );
-
             return responses;
         } catch (error) {
             return rejectWithValue(error.message);

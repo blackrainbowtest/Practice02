@@ -47,7 +47,7 @@
 .subMenuCount {
     width: 50px;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     padding-right: 10px;
     color: lightgray;
@@ -56,7 +56,7 @@
 .subMenuCountContainer {
     position: relative;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
 }
@@ -124,7 +124,7 @@
 
 .addNewSubMenu {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     background-color: #F7E4E8;
 }

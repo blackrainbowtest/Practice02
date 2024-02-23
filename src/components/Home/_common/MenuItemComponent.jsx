@@ -14,6 +14,7 @@ import {
   changeCurrentItem,
   changeDraggedItem,
   updateData,
+  updateModifiedData,
 } from "../../../features/menu/menuSlice";
 import MenuItemAddSubMenuComponent from "./MenuItemAddSubMenuComponent";
 import DeleteButtonComponent from "./Buttons/DeleteButtonComponent";
@@ -21,6 +22,11 @@ import AddButtonComponent from "./Buttons/AddButtonComponent";
 import EditButtonComponent from "./Buttons/EditButtonComponent";
 import MenuEditMenuComponent from "./MenuEditMenuComponent";
 import MenuItemName from "./MenuItemName";
+import {
+  bottomHalfLogicHandler,
+  isDescendant,
+  topHalfLogicHandler,
+} from "../../../utils/dragAndDrop";
 
 export default function MenuItemComponent({ item }) {
   const dispatch = useDispatch();
@@ -28,6 +34,7 @@ export default function MenuItemComponent({ item }) {
   const draggedItem = useSelector((state) => state?.menu?.draggedItem);
   const data = useSelector((state) => state?.menu?.data);
   const isChildShow = useSelector((state) => state?.menu?.isChildShow);
+  const modifiedData = useSelector((state) => state?.menu?.modifiedData);
 
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -35,7 +42,7 @@ export default function MenuItemComponent({ item }) {
   const [isHalf, setIsHalf] = useState(null);
 
   const itemSelectHandle = (e) => {
-    // dispatch(changeCurrentItem(item));
+    dispatch(changeCurrentItem(item));
   };
 
   useEffect(() => {
@@ -70,15 +77,11 @@ export default function MenuItemComponent({ item }) {
 
   // END Menu Interaction Logic
 
-  // Logic for adding a new child element
-
   const addNewSubMenu = (callback) => {
     const order =
       data.slice().filter((elm) => elm.parent === item.id).length + 1;
     dispatch(addMenu({ name: callback, order, parent: item.id }));
   };
-
-  // END Logic for adding a new child element
 
   // Drag and drop logic
 
@@ -91,19 +94,11 @@ export default function MenuItemComponent({ item }) {
   const dropHandle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const updatedData =
-      currentItem?.parent === draggedItem?.parent
-        ? data.filter((obj) => obj.parent === draggedItem?.parent)
-        : [
-            ...data.filter((obj) => obj.parent === draggedItem?.parent),
-            ...data.filter((obj) => obj.parent === currentItem?.parent),
-          ];
-
-    console.log(updatedData);
-
-    // if (draggedItem && currentItem.id !== draggedItem?.id) {
-    //   dispatch(dragMenu(data.filter(obj => obj.parent === currentItem.parent)));
-    // }
+    if (modifiedData.length) {
+      const updateData = data.filter(obj => modifiedData.includes(obj.parent));
+      dispatch(dragMenu(updateData));
+    }
+    dispatch(changeDraggedItem(null));
   };
 
   const dragEndHandle = (e) => {
@@ -113,7 +108,6 @@ export default function MenuItemComponent({ item }) {
   };
 
   const dragLeaveHandle = (e) => {
-    e.preventDefault();
     e.stopPropagation();
   };
 
@@ -128,140 +122,36 @@ export default function MenuItemComponent({ item }) {
       const elementHeight = elementRect.height;
       const isMouseInUpperHalf = mouseYRelativeToTop <= elementHeight / 2;
 
-      let currentItemTemp = data.find((obj) => obj.id === currentItem.id);
-      let draggedItemTemp = data.find((obj) => obj.id === item.id);
-      let isNeighbours = false;
+      let newData = [...data];
+      let isNeighbours = false; // maybe i need move this to trash
 
-      let newData = data.map((el) => {
-        if (el.id === currentItem.id) {
-          return { ...el, parent: item.parent };
-        }
-        return el;
-      });
+      newData = topHalfLogicHandler(
+        newData,
+        isMouseInUpperHalf,
+        item,
+        currentItem,
+        draggedItem
+      );
+      newData = bottomHalfLogicHandler(
+        newData,
+        isMouseInUpperHalf,
+        item,
+        currentItem,
+        draggedItem
+      );
 
-      if (isMouseInUpperHalf) {
-        // TOP SAME PARENT LOGIC DONE
-        if (currentItemTemp.parent === item.parent) {
-          newData = newData.map((el) => {
-            if (el.parent === currentItemTemp.parent) {
-              if (currentItemTemp.order < draggedItemTemp.order) {
-                if (currentItemTemp.order === draggedItemTemp.order - 1) {
-                  isNeighbours = true;
-                  if (el.id === currentItemTemp.id) {
-                    return { ...el, order: draggedItemTemp.order };
-                  } else if (el.id === draggedItemTemp.id) {
-                    return { ...el, order: currentItemTemp.order };
-                  }
-                } else {
-                  if (el.id === currentItemTemp.id) {
-                    return { ...el, order: draggedItemTemp.order - 1 };
-                  } else if (
-                    el.order <= draggedItemTemp.order - 1 &&
-                    el.order > currentItemTemp.order
-                  ) {
-                    return { ...el, order: el.order - 1 };
-                  }
-                }
-              } else {
-                if (el.id === currentItemTemp.id) {
-                  return { ...el, order: draggedItemTemp.order };
-                } else if (
-                  el.order >= draggedItemTemp.order &&
-                  el.order < currentItemTemp.order
-                ) {
-                  return { ...el, order: el.order + 1 };
-                }
-              }
-            }
-            return el;
-          });
-        } else {
+      dispatch(
+        updateModifiedData([
+          ...new Set([
+            ...modifiedData,
+            currentItem.parent,
+            draggedItem?.parent !== undefined
+              ? draggedItem?.parent
+              : currentItem.parent,
+          ]),
+        ])
+      );
 
-
-
-
-          console.log("top curr", newData.find((obj) => obj.id === currentItem.id).parent);
-          console.log("top drag", newData.find((obj) => obj.id === item.id).parent);
-          newData = newData.map((el) => {
-            if (el.id === currentItemTemp.id) {
-              return { ...el, order: draggedItemTemp?.order };
-            } else if (                                       // work correct this path
-              el.parent === currentItemTemp.parent &&
-              el.order >= currentItemTemp.order
-            ) {
-              return { ...el, order: el.order - 1 };
-            } else if (
-              el.parent === draggedItemTemp.parent &&
-              el.order >= draggedItemTemp.order
-            ) {
-              return { ...el, order: el.order + 1 };
-            }
-            return el;
-          });
-        }
-      } else {
-        // BOT SAME PARENT LOGIC DONE
-        if (currentItem.parent === item.parent) {
-          newData = newData.map((el) => {
-            if (currentItemTemp.order < draggedItemTemp.order) {
-              if (el.id === currentItemTemp.id) {
-                return { ...el, order: draggedItemTemp.order };
-              }
-              if (
-                el.order <= draggedItemTemp.order &&
-                el.order > currentItemTemp.order
-              ) {
-                return { ...el, order: el.order - 1 };
-              }
-            } else {
-              if (currentItemTemp.order === draggedItemTemp.order + 1) {
-                isNeighbours = true;
-                if (el.id === currentItemTemp.id) {
-                  return { ...el, order: draggedItemTemp.order };
-                } else if (el.id === draggedItemTemp.id) {
-                  return { ...el, order: currentItemTemp.order };
-                }
-              } else {
-                if (el.id === currentItemTemp.id) {
-                  return { ...el, order: draggedItemTemp.order + 1 };
-                }
-                if (
-                  el.order >= draggedItemTemp.order + 1 &&
-                  el.order < currentItemTemp.order
-                ) {
-                  return { ...el, order: el.order + 1 };
-                }
-              }
-            }
-            return el;
-          });
-        } else {
-          
-          
-          
-          
-
-          
-          console.log("bot curr", newData.find((obj) => obj.id === currentItem.id).parent);
-          console.log("bot drag", newData.find((obj) => obj.id === item.id).parent);
-          newData = newData.map((el) => {
-            if (el.id === currentItemTemp.id) {
-              return { ...el, order: draggedItemTemp?.order + 1 };
-            } else if (                                       // work correct this path
-              el.parent === currentItemTemp.parent &&
-              el.order >= currentItemTemp.order
-            ) {
-              return { ...el, order: el.order - 1 };
-            } else if (
-              el.parent === draggedItemTemp.parent &&
-              el.order >= draggedItemTemp.order + 1
-            ) {
-              return { ...el, order: el.order + 1 };
-            }
-            return el;
-          });
-        }
-      }
       dispatch(updateData(newData));
       dispatch(changeDraggedItem(item));
       setIsHalf(isNeighbours ? !isMouseInUpperHalf : isMouseInUpperHalf);
@@ -269,21 +159,6 @@ export default function MenuItemComponent({ item }) {
   };
 
   // END Drag and drop logic
-
-  // UTIL
-
-  const isDescendant = (parent, child, items) => {
-    if (parent === child) {
-      return true;
-    }
-
-    const parentItem = items.find((item) => item.id === parent);
-    if (!parentItem || parentItem.parent === null) {
-      return false;
-    }
-
-    return isDescendant(parentItem.parent, child, items);
-  };
 
   return (
     <div
