@@ -1,10 +1,12 @@
+@import "../_common/colors.module.css";
+
 .container {
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    background-color: #F7E4E8;
+    background-color: var(--main-background-color);
 }
 
 .addNewMenu {

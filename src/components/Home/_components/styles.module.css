@@ -1,29 +1,31 @@
+@import "../../_common/colors.module.css";
+
 .addNewMenuItem {
     padding: 6px;
     min-width: 400px;
     height: 40px;
-    border: 1px dashed gray;
+    border: 1px dashed var(--border-light-color);
 }
 
 .addNewMenuButton {
     width: 24px;
     height: 24px;
     background-color: transparent;
-    border: 1px solid gray;
+    border: 1px solid var(--border-light-color);
     border-radius: 5px;
 }
 
 .paddingContainer {
     padding: 5px;
-    background-color: #F7E4E8;
+    background-color: var(--main-background-color);
 }
 
 /* Hover */
 
 .addNewMenuItem:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--button-background-hover-color);
 }
 
 .addNewMenuItem:hover .addNewMenuButton {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--button-background-add-new-color);
 }

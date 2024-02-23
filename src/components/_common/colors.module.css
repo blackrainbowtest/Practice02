@@ -1,0 +1,18 @@
+:root {
+    --main-background-color: #F7E4E8;
+    --button-background-color: #DE1F5F;
+    --button-shadow-color: #8c0f39;
+    --button-active-color: #6457BB;
+    --button-background-hover-color: #00000033;
+    --button-background-add-new-color: #ffffff33;
+
+    --tooltip-background-color: #333;
+
+    --text-light-color: #fff;
+    --text-soft-color: #d3d3d3;
+
+    --border-light-color: #808080;
+    --border-add-new-color: #A2405F;
+
+
+  }

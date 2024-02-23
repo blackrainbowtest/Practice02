@@ -1,7 +1,9 @@
+@import "../_common/colors.module.css";
+
 .showButton {
     border-radius: 5px;
     padding: 7px 14px;
-    color: white;
-    background-color: #DE1F5F;
+    color: var(--text-light-color);
+    background-color: var(--button-background-color);
     cursor: pointer;
 }
