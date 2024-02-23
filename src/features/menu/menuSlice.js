@@ -85,7 +85,7 @@ export const menuSlice = createSlice({
                 state.errorMessage = action.payload
             })
             .addCase(dragMenu.pending, (state) => {
-                state.loading = true
+                state.loading = false       // turn off bc state allready is modified
             })
             .addCase(dragMenu.fulfilled, (state, action) => {
                 state.loading = false

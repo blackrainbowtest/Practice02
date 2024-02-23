@@ -43,6 +43,7 @@ export default function MenuItemComponent({ item }) {
 
   const itemSelectHandle = (e) => {
     dispatch(changeCurrentItem(item));
+    setIsShow(prev => !prev)
   };
 
   useEffect(() => {
@@ -55,11 +56,26 @@ export default function MenuItemComponent({ item }) {
     e.stopPropagation();
     setIsEdit((prev) => !prev);
     dispatch(changeCurrentItem(item));
+
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        setIsEdit(false);
+        document.removeEventListener('keydown', handleEscKey);
+      }
+    };
+    document.addEventListener('keydown', handleEscKey);
   };
 
   const addSubMenuHandler = (e) => {
     e.stopPropagation();
     setIsAdd((perv) => !perv);
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        setIsAdd(false);
+        document.removeEventListener('keydown', handleEscKey);
+      }
+    };
+    document.addEventListener('keydown', handleEscKey);
   };
 
   const deleteMenuHandler = (e) => {
@@ -75,7 +91,7 @@ export default function MenuItemComponent({ item }) {
     dispatch(patchMenu({ ...item, name: callback }));
   };
 
-  // END Menu Interaction Logic
+  // Add New Sub Menu Logic
 
   const addNewSubMenu = (callback) => {
     const order =
@@ -157,8 +173,6 @@ export default function MenuItemComponent({ item }) {
       setIsHalf(isNeighbours ? !isMouseInUpperHalf : isMouseInUpperHalf);
     }
   };
-
-  // END Drag and drop logic
 
   return (
     <div
